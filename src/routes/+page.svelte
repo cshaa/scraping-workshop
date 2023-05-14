@@ -7,13 +7,18 @@
 	import 'highlight.js/styles/androidstudio.css';
 
 	import Fa from 'svelte-fa';
-	import { faPlay } from '@fortawesome/free-solid-svg-icons';
+	import { faPlay, faStop } from '@fortawesome/free-solid-svg-icons';
 
 	import { onMount } from 'svelte';
 	import { toolbox } from '$lib/blockly/toolbox';
 	import Fab from '$lib/Fab.svelte';
+	import { Fetcher } from '$lib/fetcher';
+	import { readable } from 'svelte/store';
 
 	let outputCode: string = '';
+	let fetcher: Fetcher | undefined;
+	$: fetcherDone = fetcher?.done ?? readable(true);
+	$: fetcherContent = fetcher?.content ?? readable('');
 
 	let blocklyRoot: HTMLElement;
 	let codeOutputDiv: HTMLElement;
@@ -33,15 +38,27 @@
 		codeOutputDiv.textContent = outputCode;
 	};
 
+	const onExec = async () => {
+		fetcher?.stop();
+		fetcher = new Fetcher({
+			url: '/run',
+			body: outputCode
+		});
+	};
+
 	$: codeOutputDiv && hljs.highlightElement(codeOutputDiv);
 </script>
 
 <main>
 	<div class="workspace" bind:this={blocklyRoot} />
 	<div class="code-output language-typescript" bind:this={codeOutputDiv} />
-	<div class="result-output" bind:this={resultOutputDiv} />
+	<div class="result-output" bind:this={resultOutputDiv}>{$fetcherContent}</div>
 	<div class="execute-fab">
-		<Fab><Fa icon={faPlay} /></Fab>
+    {#if $fetcherDone}
+		  <Fab on:click={onExec}><Fa icon={faPlay} /></Fab>
+    {:else}
+      <Fab on:click={() => fetcher?.stop()}><Fa icon={faStop} /></Fab>
+    {/if}
 	</div>
 </main>
 
