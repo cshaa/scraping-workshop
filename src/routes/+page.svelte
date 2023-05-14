@@ -6,8 +6,12 @@
 	import hljs from 'highlight.js';
 	import 'highlight.js/styles/androidstudio.css';
 
+	import Fa from 'svelte-fa';
+	import { faPlay } from '@fortawesome/free-solid-svg-icons';
+
 	import { onMount } from 'svelte';
 	import { toolbox } from '$lib/blockly/toolbox';
+	import Fab from '$lib/Fab.svelte';
 
 	let outputCode: string = '';
 
@@ -29,13 +33,16 @@
 		codeOutputDiv.textContent = outputCode;
 	};
 
-  $: codeOutputDiv && hljs.highlightElement(codeOutputDiv);
+	$: codeOutputDiv && hljs.highlightElement(codeOutputDiv);
 </script>
 
 <main>
 	<div class="workspace" bind:this={blocklyRoot} />
 	<div class="code-output language-typescript" bind:this={codeOutputDiv} />
 	<div class="result-output" bind:this={resultOutputDiv} />
+	<div class="execute-fab">
+		<Fab><Fa icon={faPlay} /></Fab>
+	</div>
 </main>
 
 <style lang="scss">
@@ -65,13 +72,18 @@
 		.code-output {
 			grid-area: code-output;
 			min-width: 350px;
-      padding: 2em;
-      font-family: 'Courier New', Courier, monospace;
-      white-space: pre;
+			padding: 2em;
+			font-family: 'Courier New', Courier, monospace;
+			white-space: pre;
 		}
 
 		.result-output {
 			grid-area: result-output;
+		}
+
+		.execute-fab {
+			grid-area: code-output;
+			position: relative;
 		}
 	}
 </style>
