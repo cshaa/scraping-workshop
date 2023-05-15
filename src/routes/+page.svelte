@@ -1,7 +1,5 @@
 <script lang="ts">
 	import * as Blockly from 'blockly';
-	import { javascriptGenerator as _jsg } from 'blockly/javascript';
-	const javascriptGenerator: Blockly.CodeGenerator = _jsg;
 
 	import hljs from 'highlight.js';
 	import 'highlight.js/styles/androidstudio.css';
@@ -14,6 +12,7 @@
 	import Fab from '$lib/Fab.svelte';
 	import { Fetcher } from '$lib/fetcher';
 	import { readable } from 'svelte/store';
+	import { JavaScriptGenerator } from '$lib/blockly/generator';
 
 	let outputCode: string = '';
 	let fetcher: Fetcher | undefined;
@@ -27,15 +26,15 @@
 
 	onMount(() => {
 		workspace = Blockly.inject(blocklyRoot, {
-			toolbox
+			toolbox,
 		});
 
 		workspace.addChangeListener(onChange);
 	});
 
 	const onChange = () => {
-		outputCode = javascriptGenerator.workspaceToCode();
-		codeOutputDiv.textContent = outputCode;
+		outputCode = JavaScriptGenerator.workspaceToCode(workspace);
+		if (codeOutputDiv) codeOutputDiv.textContent = outputCode;
 	};
 
 	const onExec = async () => {
@@ -88,7 +87,7 @@
 
 		.code-output {
 			grid-area: code-output;
-			min-width: 350px;
+			min-width: 400px;
 			padding: 2em;
 			font-family: 'Courier New', Courier, monospace;
 			white-space: pre;
