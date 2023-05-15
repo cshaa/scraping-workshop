@@ -91,15 +91,24 @@
 			padding: 2em;
 			font-family: 'Courier New', Courier, monospace;
 			white-space: pre;
+			overflow: auto;
 		}
 
 		.result-output {
 			grid-area: result-output;
+			padding: 2em;
+			white-space: pre;
+			overflow: auto;
 		}
 
 		.execute-fab {
 			grid-area: code-output;
 			position: relative;
+			pointer-events: none;
+
+			:global(.mdc-fab) {
+				pointer-events: auto;
+			}
 		}
 	}
 </style>

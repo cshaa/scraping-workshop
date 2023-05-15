@@ -21,7 +21,10 @@ export function evalWithPage(code: string): ReadableStream<string> {
 				await AsyncFunction('page', 'print', code)(page, print);
 			})
 				.then(() => controller.close())
-				.catch(err => controller.error(err));
+				.catch(err => {
+					controller.enqueue(String(err));
+					controller.close();
+				});
 		},
 	});
 }

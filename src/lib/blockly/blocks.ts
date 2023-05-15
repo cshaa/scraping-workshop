@@ -30,6 +30,33 @@ Blockly.defineBlocksWithJsonArray([
 		helpUrl: ''
 	},
 	{
+		type: 'js_void',
+		message0: '%1',
+		args0: [
+			{
+				type: 'input_value',
+				name: 'VALUE'
+			}
+		],
+		previousStatement: null,
+		nextStatement: null,
+		tooltip: 'Just perform the action and forget the result',
+		helpUrl: ''
+	},
+	{
+		type: 'js_return',
+		message0: 'Return %1',
+		args0: [
+			{
+				type: 'input_value',
+				name: 'VALUE'
+			}
+		],
+		previousStatement: null,
+		tooltip: 'Return value from a function',
+		helpUrl: ''
+	},
+	{
 		type: 'pup_goto',
 		message0: 'Go to URL: %1',
 		args0: [
@@ -90,8 +117,7 @@ Blockly.defineBlocksWithJsonArray([
 				name: 'BODY'
 			}
 		],
-		previousStatement: null,
-		nextStatement: null,
+		output: null,
 		colour: 65,
 		tooltip: '',
 		helpUrl: ''
@@ -114,21 +140,6 @@ Blockly.defineBlocksWithJsonArray([
 		nextStatement: null,
 		colour: 230,
 		tooltip: 'Save to a local variable',
-		helpUrl: ''
-	},
-	{
-		type: 'js_void',
-		message0: '%1',
-		args0: [
-			{
-				type: 'input_value',
-				name: 'NAME'
-			}
-		],
-		previousStatement: null,
-		nextStatement: null,
-		colour: 230,
-		tooltip: 'Just perform the action and forget the result',
 		helpUrl: ''
 	},
 	{
@@ -165,6 +176,26 @@ Blockly.defineBlocksWithJsonArray([
 		type: 'dom_text_content',
 		message0: 'text content of %1',
 		args0: [
+			{
+				type: 'input_value',
+				name: 'ELEMENT',
+				check: 'Element'
+			}
+		],
+		output: null,
+		colour: 330,
+		tooltip: '',
+		helpUrl: ''
+	},
+	{
+		type: 'dom_get_attribute',
+		message0: 'value of attribute %1 of element %2',
+		args0: [
+			{
+				type: 'input_value',
+				name: 'ATTR',
+				check: 'String'
+			},
 			{
 				type: 'input_value',
 				name: 'ELEMENT',

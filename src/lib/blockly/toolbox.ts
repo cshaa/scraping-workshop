@@ -27,6 +27,11 @@ export const toolbox: ToolboxInfo = {
 				},
 				{
 					kind: 'block',
+					type: 'println',
+					inputs: { MSG: text() }
+				},
+				{
+					kind: 'block',
 					type: 'controls_if'
 				},
 				{
@@ -40,6 +45,18 @@ export const toolbox: ToolboxInfo = {
 				{
 					kind: 'block',
 					type: 'logic_boolean'
+				},
+				{
+					kind: 'block',
+					type: 'text'
+				},
+				{
+					kind: 'block',
+					type: 'js_void'
+				},
+				{
+					kind: 'block',
+					type: 'js_return'
 				}
 			]
 		},
@@ -70,8 +87,69 @@ export const toolbox: ToolboxInfo = {
 				},
 				{
 					kind: 'block',
-					type: 'pup_eval'
-				}
+					type: 'js_void',
+					inputs: {
+						VALUE: {
+							shadow: undefined,
+							block: {
+								type: 'pup_eval',
+								inputs: {
+									BODY: {
+										shadow: undefined,
+										block: {
+											type: 'js_return'
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				{
+					kind: 'block',
+					type: 'dom_document_query_selector',
+					inputs: { SELECTOR: text('') }
+				},
+				{
+					kind: 'block',
+					type: 'dom_document_query_selector_all',
+					inputs: { SELECTOR: text('') }
+				},
+				{
+					kind: 'block',
+					type: 'dom_text_content',
+					inputs: {
+						ELEMENT: {
+							block: undefined,
+							shadow: {
+								type: 'dom_document_query_selector',
+								inputs: { SELECTOR: text('') }
+							}
+						}
+					}
+				},
+				{
+					kind: 'block',
+					type: 'dom_get_attribute',
+					inputs: {
+						ATTR: text('href'),
+						ELEMENT: {
+							block: undefined,
+							shadow: {
+								type: 'dom_document_query_selector',
+								inputs: { SELECTOR: text('') }
+							}
+						}
+					}
+				},
+				{
+					kind: 'block',
+					type: 'dom_element_query_selector',
+				},
+				{
+					kind: 'block',
+					type: 'dom_element_query_selector_all',
+				},
 			]
 		},
 		{

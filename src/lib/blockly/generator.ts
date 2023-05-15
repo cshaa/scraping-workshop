@@ -43,9 +43,24 @@ const js: CodeGenerator & {
 	ORDER_NONE: number;
 } = _jsg;
 
+js['js_void'] = (block) => {
+	const value = js.valueToCode(block, 'VALUE', js.ORDER_NONE);
+	return `${value};` + LF;
+};
+
+js['js_return'] = (block) => {
+	const value = js.valueToCode(block, 'VALUE', js.ORDER_ATOMIC);
+	return `return ${value};` + LF;
+};
+
 js['print'] = (block) => {
 	const msg = js.valueToCode(block, 'MSG', js.ORDER_NONE);
 	return `print(${msg});` + LF;
+};
+
+js['println'] = (block) => {
+	const msg = js.valueToCode(block, 'MSG', js.ORDER_ADDITION);
+	return `print(${msg} + '\\n');` + LF;
 };
 
 js['pup_goto'] = (block) => {
@@ -65,7 +80,40 @@ js['pup_wait_for_element'] = (block) => {
 
 js['pup_eval'] = (block) => {
 	const body = js.statementToCode(block, 'BODY');
-	return `await page.evaluate(async () => {${LF + body}}});` + LF;
+	return [`await page.evaluate(async () => {${LF + body}})`, js.ORDER_AWAIT];
+};
+
+js['dom_document_query_selector'] = (block) => {
+	const selector = js.valueToCode(block, 'SELECTOR', js.ORDER_NONE);
+	return [`document.querySelector(${selector})`, js.ORDER_FUNCTION_CALL];
+};
+
+js['dom_document_query_selector_all'] = (block) => {
+	const selector = js.valueToCode(block, 'SELECTOR', js.ORDER_NONE);
+	return [`document.querySelectorAll(${selector})`, js.ORDER_FUNCTION_CALL];
+};
+
+js['dom_text_content'] = (block) => {
+	const element = js.valueToCode(block, 'ELEMENT', js.ORDER_MEMBER);
+	return [`${element}.textContent`, js.ORDER_MEMBER];
+};
+
+js['dom_get_attribute'] = (block) => {
+	const attr = js.valueToCode(block, 'ATTR', js.ORDER_NONE);
+	const element = js.valueToCode(block, 'ELEMENT', js.ORDER_MEMBER);
+	return [`${element}.getAttribute(${attr})`, js.ORDER_FUNCTION_CALL];
+};
+
+js['dom_element_query_selector'] = (block) => {
+	const element = js.valueToCode(block, 'ELEMENT', js.ORDER_MEMBER);
+	const selector = js.valueToCode(block, 'SELECTOR', js.ORDER_NONE);
+	return [`${element}.querySelector(${selector})`, js.ORDER_FUNCTION_CALL];
+};
+
+js['dom_element_query_selector_all'] = (block) => {
+	const element = js.valueToCode(block, 'ELEMENT', js.ORDER_MEMBER);
+	const selector = js.valueToCode(block, 'SELECTOR', js.ORDER_NONE);
+	return [`${element}.querySelectorAll(${selector})`, js.ORDER_FUNCTION_CALL];
 };
 
 export const JavaScriptGenerator = js;
