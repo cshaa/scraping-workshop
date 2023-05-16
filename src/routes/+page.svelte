@@ -1,6 +1,9 @@
 <script lang="ts">
 	import * as Blockly from 'blockly';
 
+	import { format } from 'prettier';
+	import * as parserBabel from 'prettier/parser-babel';
+
 	import hljs from 'highlight.js';
 	import 'highlight.js/styles/androidstudio.css';
 
@@ -15,6 +18,7 @@
 	import { JavaScriptGenerator } from '$lib/blockly/generator';
 
 	let outputCode: string = '';
+
 	let fetcher: Fetcher | undefined;
 	$: fetcherDone = fetcher?.done ?? readable(true);
 	$: fetcherContent = fetcher?.content ?? readable('');
@@ -26,15 +30,27 @@
 
 	onMount(() => {
 		workspace = Blockly.inject(blocklyRoot, {
-			toolbox,
+			toolbox
 		});
 
 		workspace.addChangeListener(onChange);
 	});
 
+	const formatCode = (code: string) => {
+		try {
+			return format(code, {
+				parser: 'babel',
+				plugins: [parserBabel],
+				printWidth: 45
+			});
+		} catch (_) {
+			return code;
+		}
+	};
+
 	const onChange = () => {
 		outputCode = JavaScriptGenerator.workspaceToCode(workspace);
-		if (codeOutputDiv) codeOutputDiv.textContent = outputCode;
+		codeOutputDiv.textContent = formatCode(outputCode);
 	};
 
 	const onExec = async () => {
@@ -53,11 +69,11 @@
 	<div class="code-output language-typescript" bind:this={codeOutputDiv} />
 	<div class="result-output" bind:this={resultOutputDiv}>{$fetcherContent}</div>
 	<div class="execute-fab">
-    {#if $fetcherDone}
-		  <Fab on:click={onExec}><Fa icon={faPlay} /></Fab>
-    {:else}
-      <Fab on:click={() => fetcher?.stop()}><Fa icon={faStop} /></Fab>
-    {/if}
+		{#if $fetcherDone}
+			<Fab on:click={onExec}><Fa icon={faPlay} /></Fab>
+		{:else}
+			<Fab on:click={() => fetcher?.stop()}><Fa icon={faStop} /></Fab>
+		{/if}
 	</div>
 </main>
 
