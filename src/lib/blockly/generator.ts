@@ -116,6 +116,25 @@ js['dom_element_query_selector_all'] = (block) => {
 	return [`${element}.querySelectorAll(${selector})`, js.ORDER_FUNCTION_CALL];
 };
 
+js['array_range'] = (block) => {
+	const from = +block.getFieldValue('FROM');
+	const to = +block.getFieldValue('TO');
+	const arr = [];
+	for (let i = from; i <= to; i++) arr.push(i);
+	return [`[${arr.join(', ')}]`, js.ORDER_NONE];
+};
+
+js['array_index_accessor'] = (block) => {
+	const index = js.valueToCode(block, 'INDEX', js.ORDER_ADDITION);
+	const arr = js.valueToCode(block, 'ARRAY', js.ORDER_MEMBER);
+	return [`${arr}[${index} - 1]`, js.ORDER_MEMBER];
+};
+
+js['length'] = (block) => {
+	const value = js.valueToCode(block, 'VALUE', js.ORDER_MEMBER);
+	return [`${value}.length`, js.ORDER_MEMBER];
+};
+
 js['array_map'] = (block) => {
 	const arr = js.valueToCode(block, 'ARRAY', js.ORDER_MEMBER);
 	const body = js.valueToCode(block, 'VALUE', js.ORDER_ATOMIC);
@@ -124,12 +143,12 @@ js['array_map'] = (block) => {
 	return [`${arr}.map((${varName}) => ${body})`, js.ORDER_FUNCTION_CALL];
 };
 
-js['array_range'] = (block) => {
-	const from = +block.getFieldValue('FROM');
-	const to = +block.getFieldValue('TO');
-	const arr = [];
-	for (let i = from; i <= to; i++) arr.push(i);
-	return [JSON.stringify(arr), js.ORDER_NONE];
+js['array_filter'] = (block) => {
+	const arr = js.valueToCode(block, 'ARRAY', js.ORDER_MEMBER);
+	const body = js.valueToCode(block, 'VALUE', js.ORDER_ATOMIC);
+	const varField = block.getField('VAR') as FieldVariable;
+	const varName = varField.getVariable()?.name ?? '_';
+	return [`${arr}.filter((${varName}) => ${body})`, js.ORDER_FUNCTION_CALL];
 };
 
 export const JavaScriptGenerator = js;

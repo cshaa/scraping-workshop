@@ -267,7 +267,42 @@ Blockly.defineBlocksWithJsonArray([
 			}
 		],
 		inputsInline: false,
-		output: null,
+		output: 'Array',
+		colour: 120,
+		tooltip: '',
+		helpUrl: ''
+	},
+	{
+		type: 'array_index_accessor',
+		message0: '%1th value from %2',
+		args0: [
+			{
+				type: 'input_value',
+				name: 'INDEX',
+				check: 'Number'
+			},
+			{
+				type: 'input_value',
+				name: 'ARRAY',
+				check: 'Array'
+			}
+		],
+		inputsInline: true,
+		output: 'Array',
+		colour: 120,
+		tooltip: ''
+	},
+	{
+		type: 'length',
+		message0: 'length of %1',
+		args0: [
+			{
+				type: 'input_value',
+				name: 'VALUE',
+				check: ['String', 'Array']
+			}
+		],
+    output: 'Array',
 		colour: 120,
 		tooltip: '',
 		helpUrl: ''
@@ -291,7 +326,32 @@ Blockly.defineBlocksWithJsonArray([
 			}
 		],
 		inputsInline: false,
-		output: null,
+		output: 'Array',
+		colour: 120,
+		tooltip: '',
+		helpUrl: ''
+	},
+	{
+		type: 'array_filter',
+		message0: 'go over array %1 and include %2 such that %3',
+		args0: [
+			{
+				type: 'input_value',
+				name: 'ARRAY'
+			},
+			{
+				type: 'field_variable',
+				name: 'VAR',
+				variable: 'item'
+			},
+			{
+				type: 'input_value',
+				name: 'VALUE',
+				check: 'Boolean'
+			}
+		],
+		inputsInline: false,
+		output: 'Array',
 		colour: 120,
 		tooltip: '',
 		helpUrl: ''

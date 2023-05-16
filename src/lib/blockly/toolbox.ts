@@ -94,6 +94,11 @@ export const toolbox: ToolboxInfo = {
 				},
 				{
 					kind: 'block',
+					type: 'println',
+					inputs: { MSG: text() }
+				},
+				{
+					kind: 'block',
 					type: 'pup_goto',
 					inputs: { URL: text('https://google.com') }
 				},
@@ -181,7 +186,28 @@ export const toolbox: ToolboxInfo = {
 			contents: [
 				{
 					kind: 'block',
+					type: 'print',
+					inputs: { MSG: text() }
+				},
+				{
+					kind: 'block',
+					type: 'println',
+					inputs: { MSG: text() }
+				},
+				{
+					kind: 'block',
 					type: 'array_range'
+				},
+				{
+					kind: 'block',
+					type: 'array_index_accessor',
+					inputs: {
+						INDEX: number(1)
+					}
+				},
+				{
+					kind: 'block',
+					type: 'length'
 				},
 				{
 					kind: 'block',
@@ -191,6 +217,28 @@ export const toolbox: ToolboxInfo = {
 							shadow: undefined,
 							block: {
 								type: 'variables_get'
+							}
+						}
+					}
+				},
+				{
+					kind: 'block',
+					type: 'array_filter',
+					inputs: {
+						VALUE: {
+							shadow: undefined,
+							block: {
+								type: 'logic_compare',
+								fields: { OP: 'GT' },
+								inputs: {
+									A: {
+										shadow: undefined,
+										block: {
+											type: 'variables_get'
+										}
+									},
+									B: number(0)
+								}
 							}
 						}
 					}
