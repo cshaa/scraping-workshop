@@ -179,8 +179,9 @@ Blockly.defineBlocksWithJsonArray([
     ],
     output: 'Element',
     colour: 330,
-    tooltip: '',
-    helpUrl: '',
+    tooltip:
+      'Returns the first matching element in the document. Returns an invalid value (null) if none is found.',
+    helpUrl: 'https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector',
   },
   {
     type: 'dom_document_query_selector_all',
@@ -194,8 +195,8 @@ Blockly.defineBlocksWithJsonArray([
     ],
     output: 'Array',
     colour: 330,
-    tooltip: '',
-    helpUrl: '',
+    tooltip: 'Returns an array of all matching elements in the document.',
+    helpUrl: 'https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll',
   },
   {
     type: 'dom_text_content',
@@ -229,8 +230,9 @@ Blockly.defineBlocksWithJsonArray([
     ],
     output: null,
     colour: 330,
-    tooltip: '',
-    helpUrl: '',
+    tooltip:
+      "Get the value of the specified attribute. Returns an invalid value (null) if the attribute doesn't exist.",
+    helpUrl: 'https://developer.mozilla.org/en-US/docs/Web/API/Element/getAttribute',
   },
   {
     type: 'dom_element_query_selector',

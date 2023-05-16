@@ -100,7 +100,7 @@ js['dom_document_query_selector'] = (block) => {
 
 js['dom_document_query_selector_all'] = (block) => {
   const selector = js.valueToCode(block, 'SELECTOR', js.ORDER_NONE);
-  return [`document.querySelectorAll(${selector})`, js.ORDER_FUNCTION_CALL];
+  return [`[...document.querySelectorAll(${selector})]`, js.ORDER_NONE];
 };
 
 js['dom_text_content'] = (block) => {
@@ -123,7 +123,7 @@ js['dom_element_query_selector'] = (block) => {
 js['dom_element_query_selector_all'] = (block) => {
   const element = js.valueToCode(block, 'ELEMENT', js.ORDER_MEMBER);
   const selector = js.valueToCode(block, 'SELECTOR', js.ORDER_NONE);
-  return [`${element}.querySelectorAll(${selector})`, js.ORDER_FUNCTION_CALL];
+  return [`[...${element}.querySelectorAll(${selector})]`, js.ORDER_NONE];
 };
 
 js['array_range'] = (block) => {
