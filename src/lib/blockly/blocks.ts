@@ -167,7 +167,7 @@ Blockly.defineBlocksWithJsonArray([
 				check: 'String'
 			}
 		],
-		output: 'ElementArray',
+		output: 'Array',
 		colour: 330,
 		tooltip: '',
 		helpUrl: ''
@@ -244,8 +244,55 @@ Blockly.defineBlocksWithJsonArray([
 			}
 		],
 		inputsInline: true,
-		output: 'ElementArray',
+		output: 'Array',
 		colour: 330,
+		tooltip: '',
+		helpUrl: ''
+	},
+	{
+		type: 'array_range',
+		message0: 'array of numbers from %1 to %2',
+		args0: [
+			{
+				type: 'field_number',
+				name: 'FROM',
+				value: 1,
+				precision: 1
+			},
+			{
+				type: 'field_number',
+				name: 'TO',
+				value: 5,
+				precision: 1
+			}
+		],
+		inputsInline: false,
+		output: null,
+		colour: 120,
+		tooltip: '',
+		helpUrl: ''
+	},
+	{
+		type: 'array_map',
+		message0: 'go over array %1 and map %2 to %3',
+		args0: [
+			{
+				type: 'input_value',
+				name: 'ARRAY'
+			},
+			{
+				type: 'field_variable',
+				name: 'VAR',
+				variable: 'item'
+			},
+			{
+				type: 'input_value',
+				name: 'VALUE'
+			}
+		],
+		inputsInline: false,
+		output: null,
+		colour: 120,
 		tooltip: '',
 		helpUrl: ''
 	}

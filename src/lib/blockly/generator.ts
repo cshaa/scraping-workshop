@@ -1,4 +1,4 @@
-import type { Block, CodeGenerator } from 'blockly';
+import type { Block, CodeGenerator, FieldVariable } from 'blockly';
 import { javascriptGenerator as _jsg } from 'blockly/javascript';
 
 const LF = '\n';
@@ -114,6 +114,22 @@ js['dom_element_query_selector_all'] = (block) => {
 	const element = js.valueToCode(block, 'ELEMENT', js.ORDER_MEMBER);
 	const selector = js.valueToCode(block, 'SELECTOR', js.ORDER_NONE);
 	return [`${element}.querySelectorAll(${selector})`, js.ORDER_FUNCTION_CALL];
+};
+
+js['array_map'] = (block) => {
+	const arr = js.valueToCode(block, 'ARRAY', js.ORDER_MEMBER);
+	const body = js.valueToCode(block, 'VALUE', js.ORDER_ATOMIC);
+	const varField = block.getField('VAR') as FieldVariable;
+	const varName = varField.getVariable()?.name ?? '_';
+	return [`${arr}.map((${varName}) => ${body})`, js.ORDER_FUNCTION_CALL];
+};
+
+js['array_range'] = (block) => {
+	const from = +block.getFieldValue('FROM');
+	const to = +block.getFieldValue('TO');
+	const arr = [];
+	for (let i = from; i <= to; i++) arr.push(i);
+	return [JSON.stringify(arr), js.ORDER_NONE];
 };
 
 export const JavaScriptGenerator = js;

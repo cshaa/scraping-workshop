@@ -1,12 +1,22 @@
 import type { ToolboxInfo } from 'blockly/core/utils/toolbox';
-import './blocks.ts';
 import type { ConnectionState } from 'blockly/core/serialization/blocks';
+import './blocks.ts';
 
 const text = (defaultText?: string): ConnectionState => ({
 	shadow: {
 		type: 'text',
 		fields: {
 			TEXT: defaultText
+		}
+	},
+	block: undefined
+});
+
+const number = (n?: number): ConnectionState => ({
+	shadow: {
+		type: 'math_number',
+		fields: {
+			NUM: n
 		}
 	},
 	block: undefined
@@ -32,6 +42,14 @@ export const toolbox: ToolboxInfo = {
 				},
 				{
 					kind: 'block',
+					type: 'math_arithmetic',
+					inputs: {
+						A: number(),
+						B: number()
+					}
+				},
+				{
+					kind: 'block',
 					type: 'controls_if'
 				},
 				{
@@ -49,6 +67,10 @@ export const toolbox: ToolboxInfo = {
 				{
 					kind: 'block',
 					type: 'text'
+				},
+				{
+					kind: 'block',
+					type: 'math_number'
 				},
 				{
 					kind: 'block',
@@ -144,12 +166,35 @@ export const toolbox: ToolboxInfo = {
 				},
 				{
 					kind: 'block',
-					type: 'dom_element_query_selector',
+					type: 'dom_element_query_selector'
 				},
 				{
 					kind: 'block',
-					type: 'dom_element_query_selector_all',
+					type: 'dom_element_query_selector_all'
+				}
+			]
+		},
+		{
+			kind: 'category',
+			name: 'Arrays',
+			colour: '120',
+			contents: [
+				{
+					kind: 'block',
+					type: 'array_range'
 				},
+				{
+					kind: 'block',
+					type: 'array_map',
+					inputs: {
+						VALUE: {
+							shadow: undefined,
+							block: {
+								type: 'variables_get'
+							}
+						}
+					}
+				}
 			]
 		},
 		{
