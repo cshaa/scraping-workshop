@@ -50,6 +50,14 @@ export const toolbox: ToolboxInfo = {
         },
         {
           kind: 'block',
+          type: 'string_concat',
+          inputs: {
+            A: text(),
+            B: text(),
+          },
+        },
+        {
+          kind: 'block',
           type: 'controls_if',
         },
         {
@@ -250,6 +258,26 @@ export const toolbox: ToolboxInfo = {
               },
             },
           },
+        },
+        {
+          kind: 'block',
+          type: 'controls_repeat',
+        },
+        {
+          kind: 'block',
+          type: 'controls_whileUntil',
+        },
+        {
+          kind: 'block',
+          type: 'controls_for',
+        },
+        {
+          kind: 'block',
+          type: 'controls_forEach',
+        },
+        {
+          kind: 'block',
+          type: 'controls_flow_statements',
         },
       ],
     },

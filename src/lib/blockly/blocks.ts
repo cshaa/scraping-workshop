@@ -82,6 +82,22 @@ Blockly.defineBlocksWithJsonArray([
     output: null,
   },
   {
+    type: 'string_concat',
+    message0: 'concat strings %1 %2',
+    args0: [
+      {
+        type: 'input_value',
+        name: 'A',
+      },
+      {
+        type: 'input_value',
+        name: 'B',
+      },
+    ],
+    output: 'String',
+    colour: 160,
+  },
+  {
     type: 'pup_goto',
     message0: 'Go to URL: %1',
     args0: [

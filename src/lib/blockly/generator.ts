@@ -63,6 +63,12 @@ js['js_expression'] = (block) => {
   return [code, js.ORDER_ATOMIC];
 }
 
+js['string_concat'] = (block) => {
+  const a = js.valueToCode(block, 'A', js.ORDER_NONE);
+  const b = js.valueToCode(block, 'B', js.ORDER_NONE);
+  return [`'' + ${a} + ${b}`, js.ORDER_ADDITION];
+}
+
 js['print'] = (block) => {
   const msg = js.valueToCode(block, 'MSG', js.ORDER_NONE);
   return `print(${msg});` + LF;
