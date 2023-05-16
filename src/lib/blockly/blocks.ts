@@ -57,15 +57,29 @@ Blockly.defineBlocksWithJsonArray([
     helpUrl: '',
   },
   {
-    type: 'js_code',
+    type: 'js_statement',
+    message0: '%1',
+    args0: [
+      {
+        type: 'field_multilinetext',
+        name: 'RAW_JS_CODE',
+        text: '/* js code */',
+      },
+    ],
+    previousStatement: null,
+    nextStatement: null,
+  },
+  {
+    type: 'js_expression',
     message0: '%1',
     args0: [
       {
         type: 'field_input',
         name: 'RAW_JS_CODE',
-        text: '// js code',
+        text: '/* js code */',
       },
     ],
+    output: null,
   },
   {
     type: 'pup_goto',

@@ -80,6 +80,14 @@ export const toolbox: ToolboxInfo = {
           kind: 'block',
           type: 'js_return',
         },
+        {
+          kind: 'block',
+          type: 'js_expression',
+        },
+        {
+          kind: 'block',
+          type: 'js_statement',
+        },
       ],
     },
     {

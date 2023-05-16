@@ -53,6 +53,16 @@ js['js_return'] = (block) => {
   return `return ${value};` + LF;
 };
 
+js['js_statement'] = (block) => {
+  const code = block.getFieldValue('RAW_JS_CODE');
+  return code + LF;
+}
+
+js['js_expression'] = (block) => {
+  const code = block.getFieldValue('RAW_JS_CODE');
+  return [code, js.ORDER_ATOMIC];
+}
+
 js['print'] = (block) => {
   const msg = js.valueToCode(block, 'MSG', js.ORDER_NONE);
   return `print(${msg});` + LF;
