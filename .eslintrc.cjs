@@ -28,6 +28,7 @@ module.exports = {
 		}
 	],
 	rules: {
-		'@typescript-eslint/no-empty-function': 'off'
+		'@typescript-eslint/no-empty-function': 'off',
+		'no-empty': 'off'
 	}
 };
