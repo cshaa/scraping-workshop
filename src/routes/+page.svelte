@@ -1,130 +1,131 @@
 <script lang="ts">
-	import * as Blockly from 'blockly';
+  import * as Blockly from 'blockly';
 
-	import { format } from 'prettier';
-	import * as parserBabel from 'prettier/parser-babel';
+  import { format } from 'prettier';
+  import * as parserBabel from 'prettier/parser-babel';
 
-	import hljs from 'highlight.js';
-	import 'highlight.js/styles/androidstudio.css';
+  import hljs from 'highlight.js';
+  import 'highlight.js/styles/androidstudio.css';
 
-	import Fa from 'svelte-fa';
-	import { faPlay, faStop } from '@fortawesome/free-solid-svg-icons';
+  import Fa from 'svelte-fa';
+  import { faPlay, faStop } from '@fortawesome/free-solid-svg-icons';
 
-	import { onMount } from 'svelte';
-	import { toolbox } from '$lib/blockly/toolbox';
-	import Fab from '$lib/Fab.svelte';
-	import { Fetcher } from '$lib/fetcher';
-	import { readable } from 'svelte/store';
-	import { JavaScriptGenerator } from '$lib/blockly/generator';
+  import { onMount } from 'svelte';
+  import { toolbox } from '$lib/blockly/toolbox';
+  import Fab from '$lib/Fab.svelte';
+  import { Fetcher } from '$lib/fetcher';
+  import { readable } from 'svelte/store';
+  import { JavaScriptGenerator } from '$lib/blockly/generator';
 
-	let outputCode: string = '';
+  let outputCode: string = '';
 
-	let fetcher: Fetcher | undefined;
-	$: fetcherDone = fetcher?.done ?? readable(true);
-	$: fetcherContent = fetcher?.content ?? readable('');
+  let fetcher: Fetcher | undefined;
+  $: fetcherDone = fetcher?.done ?? readable(true);
+  $: fetcherContent = fetcher?.content ?? readable('');
 
-	let blocklyRoot: HTMLElement;
-	let codeOutputDiv: HTMLElement;
-	let resultOutputDiv: HTMLElement;
-	let workspace: Blockly.Workspace;
+  let blocklyRoot: HTMLElement;
+  let codeOutputDiv: HTMLElement;
+  let resultOutputDiv: HTMLElement;
+  let workspace: Blockly.Workspace;
 
-	onMount(() => {
-		workspace = Blockly.inject(blocklyRoot, {
-			toolbox
-		});
+  onMount(() => {
+    workspace = Blockly.inject(blocklyRoot, {
+      toolbox,
+    });
 
-		workspace.addChangeListener(onChange);
-	});
+    workspace.addChangeListener(onChange);
+  });
 
-	const formatCode = (code: string) => {
-		try {
-			return format(code, {
-				parser: 'babel',
-				plugins: [parserBabel],
-				printWidth: 45
-			});
-		} catch (_) {
-			return code;
-		}
-	};
+  const formatCode = (code: string) => {
+    try {
+      return format(code, {
+        parser: 'babel',
+        plugins: [parserBabel],
+        printWidth: 45,
+        singleQuote: true,
+      });
+    } catch (_) {
+      return code;
+    }
+  };
 
-	const onChange = () => {
-		outputCode = JavaScriptGenerator.workspaceToCode(workspace);
-		codeOutputDiv.textContent = formatCode(outputCode);
-	};
+  const onChange = () => {
+    outputCode = JavaScriptGenerator.workspaceToCode(workspace);
+    codeOutputDiv.textContent = formatCode(outputCode);
+  };
 
-	const onExec = async () => {
-		fetcher?.stop();
-		fetcher = new Fetcher({
-			url: '/run',
-			body: outputCode
-		});
-	};
+  const onExec = async () => {
+    fetcher?.stop();
+    fetcher = new Fetcher({
+      url: '/run',
+      body: outputCode,
+    });
+  };
 
-	$: codeOutputDiv && hljs.highlightElement(codeOutputDiv);
+  $: codeOutputDiv && hljs.highlightElement(codeOutputDiv);
 </script>
 
 <main>
-	<div class="workspace" bind:this={blocklyRoot} />
-	<div class="code-output language-typescript" bind:this={codeOutputDiv} />
-	<div class="result-output" bind:this={resultOutputDiv}>{$fetcherContent}</div>
-	<div class="execute-fab">
-		{#if $fetcherDone}
-			<Fab on:click={onExec}><Fa icon={faPlay} /></Fab>
-		{:else}
-			<Fab on:click={() => fetcher?.stop()}><Fa icon={faStop} /></Fab>
-		{/if}
-	</div>
+  <div class="workspace" bind:this={blocklyRoot} />
+  <div class="code-output language-typescript" bind:this={codeOutputDiv} />
+  <div class="result-output" bind:this={resultOutputDiv}>{$fetcherContent}</div>
+  <div class="execute-fab">
+    {#if $fetcherDone}
+      <Fab on:click={onExec}><Fa icon={faPlay} /></Fab>
+    {:else}
+      <Fab on:click={() => fetcher?.stop()}><Fa icon={faStop} /></Fab>
+    {/if}
+  </div>
 </main>
 
 <style lang="scss">
-	:global(body),
-	main {
-		padding: 0;
-		margin: 0;
-	}
+  :global(body),
+  main {
+    padding: 0;
+    margin: 0;
+  }
 
-	main {
-		width: 100vw;
-		height: 100vh;
+  main {
+    width: 100vw;
+    height: 100vh;
 
-		display: grid;
-		grid-template-columns: 3fr 1fr;
-		grid-template-rows: 2fr 1fr;
-		gap: 0px 0px;
-		grid-auto-flow: row;
-		grid-template-areas:
-			'workspace code-output'
-			'result-output result-output';
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-template-rows: 2fr 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      'workspace code-output'
+      'result-output result-output';
 
-		.workspace {
-			grid-area: workspace;
-		}
+    .workspace {
+      grid-area: workspace;
+    }
 
-		.code-output {
-			grid-area: code-output;
-			min-width: 400px;
-			padding: 2em;
-			font-family: 'Courier New', Courier, monospace;
-			white-space: pre;
-			overflow: auto;
-		}
+    .code-output {
+      grid-area: code-output;
+      min-width: 400px;
+      padding: 2em;
+      font-family: 'Courier New', Courier, monospace;
+      white-space: pre;
+      overflow: auto;
+    }
 
-		.result-output {
-			grid-area: result-output;
-			padding: 2em;
-			white-space: pre;
-			overflow: auto;
-		}
+    .result-output {
+      grid-area: result-output;
+      padding: 2em;
+      white-space: pre;
+      overflow: auto;
+    }
 
-		.execute-fab {
-			grid-area: code-output;
-			position: relative;
-			pointer-events: none;
+    .execute-fab {
+      grid-area: code-output;
+      position: relative;
+      pointer-events: none;
 
-			:global(.mdc-fab) {
-				pointer-events: auto;
-			}
-		}
-	}
+      :global(.mdc-fab) {
+        pointer-events: auto;
+      }
+    }
+  }
 </style>
