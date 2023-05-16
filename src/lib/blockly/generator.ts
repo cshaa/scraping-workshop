@@ -115,13 +115,13 @@ js['dom_get_attribute'] = (block) => {
 };
 
 js['dom_element_query_selector'] = (block) => {
-  const element = js.valueToCode(block, 'ELEMENT', js.ORDER_MEMBER);
+  const element = js.valueToCode(block, 'ANCESTOR', js.ORDER_MEMBER);
   const selector = js.valueToCode(block, 'SELECTOR', js.ORDER_NONE);
   return [`${element}.querySelector(${selector})`, js.ORDER_FUNCTION_CALL];
 };
 
 js['dom_element_query_selector_all'] = (block) => {
-  const element = js.valueToCode(block, 'ELEMENT', js.ORDER_MEMBER);
+  const element = js.valueToCode(block, 'ANCESTOR', js.ORDER_MEMBER);
   const selector = js.valueToCode(block, 'SELECTOR', js.ORDER_NONE);
   return [`[...${element}.querySelectorAll(${selector})]`, js.ORDER_NONE];
 };
